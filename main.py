@@ -1,14 +1,27 @@
-import imp
 from tkinter import *
-from tkinter import ttk
 from sidebar import SidebarFrame
-from admin import AdminFrame
+from content import ContentFrame
 
-if __name__ == '__main__':
-    root=Tk()
-    root.title("X-LAB")
-    root.geometry("900x500")
 
-    sidebar = SidebarFrame(root)
+class App(Tk):
+    def __init__(self):
+        super().__init__()
+        self.widgets()
     
-    root.mainloop()
+    def widgets(self):
+        # self.frames = [AdminFrame, ]
+
+        self.sidebar = SidebarFrame(self)
+        self.content = ContentFrame(self)
+
+    def window_configure(self):
+        self.title("X-LAB") #title of window
+        self.geometry("900x500")
+        self.propagate(False)
+
+    def change_content_frame(self, e):
+        self.content.show_frame(e['text'])
+
+if __name__ == "__main__":
+  app = App()
+  app.mainloop()
