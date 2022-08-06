@@ -25,7 +25,7 @@ class AdminFrame(Frame):
             'CAL.POINT',
         ]
         self.no_of_entries = len(self.label_values)
-        self.string_vars = [StringVar() for i in range(self.no_of_entries)]
+        self.string_vars = [StringVar() for _ in range(self.no_of_entries)]
         self.widgets()
 
     def widgets(self):
@@ -34,10 +34,11 @@ class AdminFrame(Frame):
             ttk.Label(self, text=value, justify='left', padding=(10, 5, 10, 5)).grid(row=i, column=0, sticky='new')
             ttk.Entry(self, textvariable=self.string_vars[i]).grid(row=i, column=1, padx=10, sticky='ew')
 
-        save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
-        save_btn.grid(row=14, columnspan=2, padx=10, pady=10, sticky='e')
+        self.save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
+        self.save_btn.grid(row=14, columnspan=2, padx=10, pady=10, sticky='e')
+        self.save_btn.bind('<Return>', self.on_save)  
     
-    def on_save(self):
+    def on_save(self, e=None):
         for i in range(self.no_of_entries):
             print(self.string_vars[i].get())
     
