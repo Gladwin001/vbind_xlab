@@ -13,17 +13,14 @@ class UserFrame(Frame):
     def entry_data(self, e=None):
         #entries_1=''
         entries_1=[]
-        for value in self.data :
+        for value in self.data:
             #entries_1=entries_1+ int(value.get()) +'\n'
             entries_1.append(int(value.get()))
-            
+
         print(entries_1)
 
-           
 
     def widgets(self):
-        # Write UI code here with master attribute as self.
-        # Use ttk.button for default system style.
         self.data=[]
         for i, value in enumerate(self.label_values):
             ttk.Label(self, text=value, justify='left', padding=(10, 5, 10, 5)).grid(row=i, column=2, sticky='new')
@@ -31,7 +28,7 @@ class UserFrame(Frame):
             entries=ttk.Entry(self)
             entries.grid(row=i, column=3, padx=10, sticky='ew')
             self.data.append(entries)
-            
+
         self.save_btn = ttk.Button(self, text='Save', width=10,command=self.entry_data)
         self.save_btn.grid(row=10,  column=2,columnspan=2, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.entry_data)
@@ -41,7 +38,7 @@ class UserFrame(Frame):
 
     def hide_frame(self):
         self.pack_forget()
-    
+
     def destroy_frame(self):
         self.destroy()
 
