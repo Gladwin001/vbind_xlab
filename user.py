@@ -1,4 +1,4 @@
-from tkinter import Frame, IntVar
+from tkinter import Frame, DoubleVar ,IntVar, StringVar
 from tkinter import ttk
 
 class UserFrame(Frame):
@@ -12,7 +12,7 @@ class UserFrame(Frame):
 
         # Standard Deviation Variables
         self.std_labels = ['STD-1','STD-2','STD-3','STD-4','STD-5','STD-6','STD-7','STD-8','STD-9','STD-10']
-        self.std_vars = [IntVar()for i in range(len(self.std_labels))]
+        self.std_vars = [DoubleVar()for i in range(len(self.std_labels))]
         
         #====================
         self.widgets()
@@ -25,6 +25,8 @@ class UserFrame(Frame):
         for i in range(len(self.std_labels)):
             entry=ttk.Entry(self, textvariable=self.std_vars[i])
             entry.grid(row=i, column=3, padx=10, sticky='ew')
+            entry.bind('<Return>', self.entry_next)
+            # entry.bind('<FocusIn>', self.select_widget)
             self.data.append(entry)
 
         self.save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
@@ -41,6 +43,18 @@ class UserFrame(Frame):
         avg=sum/len(self.std_labels)
         return(avg)
         #print('The average is',avg)
+
+    def entry_next(self, event):
+        next_entry = event.widget.tk_focusNext()
+        next_entry.focus()
+        if isinstance(next_entry, ttk.Entry):
+            # select text only if the next widget is an entry.
+            next_entry.select_range(0, 'end')
+        return("break")
+    
+    # def select_widget(self ,e):
+    #     e.widget.select_range(0, 'end')
+
     def show_frame(self):
         self.pack(expand=True, fill='both')
 
@@ -81,7 +95,8 @@ class UserFrame_1(Frame):
             print(float(self.std_vars[i].get()), end='\t')
         # error!!!!! try to bring value of standard average
         avg=frame.on_save()
-        true_value_c= avg + self.std_vars[1] - self.std_vars[2]
+        print(avg)
+        true_value_c= avg + self.std_vars[1].get() - self.std_vars[2].get()
         print(true_value_c)
 
 

@@ -32,13 +32,24 @@ class AdminFrame(Frame):
         # ======= grid 14 x 3 =======
         for i, value in enumerate(self.label_values):
             ttk.Label(self, text=value, justify='left', padding=(10, 5, 10, 5)).grid(row=i, column=0, sticky='new')
-            ttk.Entry(self, textvariable=self.string_vars[i]).grid(row=i, column=1, padx=10, sticky='ew')
+            entry = ttk.Entry(self, textvariable=self.string_vars[i])
+            entry.grid(row=i, column=1, padx=10, sticky='ew')
+            entry.bind('<Return>', self.entry_next)
 
         self.save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
         self.save_btn.grid(row=14, columnspan=2, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.on_save)  
     
+    def entry_next(self, event):
+        next_entry = event.widget.tk_focusNext()
+        next_entry.focus()
+        if isinstance(next_entry, ttk.Entry):
+            # select text only if the next widget is an entry.
+            next_entry.select_range(0, 'end')
+        return("break")
+
     def on_save(self, e=None):
+        # !! Write code for save functionality below.
         for i in range(self.no_of_entries):
             print(self.string_vars[i].get())
     
