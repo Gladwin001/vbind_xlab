@@ -1,8 +1,6 @@
-from tkinter import ANCHOR, Frame, Button
+from tkinter import Frame, Button
 from tkinter.ttk import Label
 from PIL import ImageTk, Image
-from click import command
-from numpy import imag
 from admin import AdminFrame
 from content import ContentFrame
 
