@@ -20,7 +20,7 @@ class ContentFrame(Frame):
         self.user = UserFrame(self)
     
     def show_frame(self, frame=None):
-        if frame and not self.current_child_frame:
+        if frame and self.current_child_frame is None:
             if frame=='Admin':
                 self.admin.show_frame()
                 self.current_child_frame = self.admin

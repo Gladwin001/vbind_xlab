@@ -6,6 +6,7 @@ from content import ContentFrame
 class App(Tk):
     def __init__(self):
         super().__init__()
+        self.window_configure()
         self.widgets()
     
     def widgets(self):
