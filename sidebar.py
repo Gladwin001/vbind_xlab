@@ -17,7 +17,6 @@ class SidebarFrame(Frame):
         # ===================
 
         self.propagate(0)
-        self.pack(side='left', fill='y')
         self.widgets()
 
     def widgets(self):
@@ -88,6 +87,15 @@ class SidebarFrame(Frame):
         self.btn_ham.bind("<Enter>", self.btn_hover_onenter)
         self.btn_ham.bind("<Leave>", self.btn_hover_onleave)
         self.btn_ham.pack(anchor='e', padx=5, pady=2)
+    
+    def show_frame(self):
+        self.pack(side='left', fill='y')
+    
+    def hide_frame(self):
+        self.pack_forget()
+    
+    def destroy_frame(self):
+        self.destroy()
 
 
 # For Testing
