@@ -9,7 +9,6 @@ class ContentFrame(Frame):
         self.parent = parent
         self.widgets()
         self.pack_propagate(False)
-        self.pack(side='right', expand=True, fill='both')
     
     def widgets(self):
         self.current_child_frame = None
@@ -37,6 +36,15 @@ class ContentFrame(Frame):
             self.current_child_frame.hide_frame()
             self.user.show_frame()
             self.current_child_frame = self.user
+    
+    def show_frame(self):
+        self.pack(side='right', expand=True, fill='both')
+
+    def hide_frame(self):
+        self.pack_forget()
+    
+    def destroy_frame(self):
+        self.destroy()
 
         
 
