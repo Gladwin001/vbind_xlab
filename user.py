@@ -101,7 +101,7 @@ class UserFrame_uuc(Frame):      #UUC Frame
         self.save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
         self.save_btn.grid(row=13, columnspan=3, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.on_save)
-        
+        self.save_btn.bind('<Return>', self.difference,add='+')
     def on_save(self, e=None):
         # write code after clicking the button
         # below code is printing all the values entered in the entries at the time of clicking 'save' btn.
@@ -126,6 +126,12 @@ class UserFrame_uuc(Frame):      #UUC Frame
             # select text only if the next widget is an entry.
             next_entry.select_range(0, 'end')
         return("break")
+
+    def difference(self,e=None) :
+        arr=[DoubleVar()for i in range(10)]
+        for i in range(0,10,1):
+            arr[i]=frame_uuc.uuc_vars[i].get() - frame_std.std_vars[i].get()
+        print(arr)
 
 # For testing - Only run user.py to test this frame.
 if __name__ == "__main__":
