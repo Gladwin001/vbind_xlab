@@ -2,7 +2,7 @@ from tkinter import Frame, Button
 from tkinter.ttk import Label
 from PIL import ImageTk, Image
 from admin import AdminFrame
-from content import ContentFrame
+# from content import ContentFrame
 
 
 class SidebarFrame(Frame):
@@ -104,5 +104,5 @@ if __name__ == '__main__':
     root = Tk()
     root.title("X-LAB")
     root.geometry("900x500")
-    SidebarFrame(root)
+    SidebarFrame(root).pack(side='left')
     root.mainloop()
