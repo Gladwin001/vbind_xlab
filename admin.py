@@ -68,5 +68,5 @@ if __name__ == "__main__":
     from tkinter import Tk
     app = Tk()
     frame = AdminFrame(app)
-    frame.pack(expand=True, fill='both')
+    frame.show_frame()
     app.mainloop()

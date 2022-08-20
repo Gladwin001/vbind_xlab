@@ -1,6 +1,31 @@
 from tkinter import Frame, DoubleVar ,IntVar, StringVar
 from tkinter import ttk
 
+
+class UserFrame(Frame):        #STD Frame
+    def __init__(self, parent, **args):
+        Frame.__init__(self, parent)
+        self.parent = parent
+
+        self.widgets()
+    
+    def widgets(self):
+        uf1 = UserFrame_std(self)
+        uf1.show_frame()
+        uf2 = UserFrame_uuc(self)
+        uf2.show_frame()
+    
+    def show_frame(self):
+        self.pack(expand=True, fill='both')
+
+    def hide_frame(self):
+        self.pack_forget()
+
+    def destroy_frame(self):
+        self.destroy()
+
+
+
 class UserFrame_std(Frame):        #STD Frame
     def __init__(self, parent, **args):
         Frame.__init__(self, parent, background="white")
@@ -62,7 +87,7 @@ class UserFrame_std(Frame):        #STD Frame
     #     e.widget.select_range(0, 'end')
 
     def show_frame(self):
-        self.pack(expand=True, fill='both')
+        self.pack(expand=True, fill='both', side='left')
 
     def hide_frame(self):
         self.pack_forget()
@@ -132,6 +157,15 @@ class UserFrame_uuc(Frame):      #UUC Frame
         for i in range(0,10,1):
             arr[i]=frame_uuc.uuc_vars[i].get() - frame_std.std_vars[i].get()
         print(arr)
+    
+    def show_frame(self):
+        self.pack(expand=True, fill='both', side='right')
+
+    def hide_frame(self):
+        self.pack_forget()
+
+    def destroy_frame(self):
+        self.destroy()
 
 # For testing - Only run user.py to test this frame.
 if __name__ == "__main__":
@@ -142,8 +176,6 @@ if __name__ == "__main__":
     #scrollbar = ttk.Scrollbar(app, orient='vertical', command=app.yview)
     #scrollbar.grid(row=0, column=1, sticky='NS')
     #app['yscrollcommand'] = scrollbar.set
-    frame_std = UserFrame_std(app)
-    frame_std.pack(expand=True, fill='both',side='left')
-    frame_uuc = UserFrame_uuc(app)
-    frame_uuc.pack(expand=True, fill='both',side='right')
+    frame = UserFrame(app)
+    frame.show_frame()
     app.mainloop()

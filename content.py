@@ -19,7 +19,9 @@ class ContentFrame(Frame):
         self.user = UserFrame(self)
     
     def show_frame(self, frame=None):
+        
         if frame and self.current_child_frame is None:
+            self.pack(side='right', expand=True, fill='both')
             if frame=='Admin':
                 self.admin.show_frame()
                 self.current_child_frame = self.admin
@@ -36,9 +38,6 @@ class ContentFrame(Frame):
             self.current_child_frame.hide_frame()
             self.user.show_frame()
             self.current_child_frame = self.user
-    
-    def show_frame(self):
-        self.pack(side='right', expand=True, fill='both')
 
     def hide_frame(self):
         self.pack_forget()
@@ -57,5 +56,6 @@ if __name__ == '__main__':
     root=Tk()
     root.title("X-LAB")
     root.geometry("900x500")
-    ContentFrame(root)
+    cf = ContentFrame(root)
+    cf.show_frame()
     root.mainloop()

@@ -72,8 +72,8 @@ class SidebarFrame(Frame):
             btn.bind("<Leave>", self.btn_hover_onleave)
         return btn
 
-    def send_signal_to_main(self, e):
-        self.parent.change_content_frame(e)
+    def send_signal_to_main(self, btn):
+        self.parent.change_content_frame(btn)
     
     def create_sidebar_handler(self):
         self.hamburger_icon = ImageTk.PhotoImage(Image.open(
@@ -104,5 +104,6 @@ if __name__ == '__main__':
     root = Tk()
     root.title("X-LAB")
     root.geometry("900x500")
-    SidebarFrame(root).pack(side='left')
+    sbf = SidebarFrame(root)
+    sbf.show_frame()
     root.mainloop()
