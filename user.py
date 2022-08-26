@@ -1,18 +1,20 @@
 from tkinter import Frame, DoubleVar ,IntVar, StringVar
 from tkinter import ttk
 
+from scrollframe import VerticalScrolledFrame
 
-class UserFrame(Frame):        #STD Frame
+
+class UserFrame(VerticalScrolledFrame):        #Main User Frame
     def __init__(self, parent, **args):
-        Frame.__init__(self, parent)
+        VerticalScrolledFrame.__init__(self, parent)
         self.parent = parent
 
         self.widgets()
     
     def widgets(self):
-        uf1 = UserFrame_std(self)
+        uf1 = UserFrame_std(self.interior)
         uf1.show_frame()
-        uf2 = UserFrame_uuc(self)
+        uf2 = UserFrame_uuc(self.interior)
         uf2.show_frame()
     
     def show_frame(self):
@@ -87,7 +89,7 @@ class UserFrame_std(Frame):        #STD Frame
     #     e.widget.select_range(0, 'end')
 
     def show_frame(self):
-        self.pack(expand=True, fill='both', side='left')
+        self.pack(expand=True, fill='both')
 
     def hide_frame(self):
         self.pack_forget()
@@ -159,7 +161,7 @@ class UserFrame_uuc(Frame):      #UUC Frame
         print(arr)
     
     def show_frame(self):
-        self.pack(expand=True, fill='both', side='right')
+        self.pack(expand=True, fill='both')
 
     def hide_frame(self):
         self.pack_forget()
