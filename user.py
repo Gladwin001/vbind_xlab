@@ -1,7 +1,7 @@
 from tkinter import Frame, DoubleVar ,IntVar, StringVar
 from tkinter import ttk
 
-from scrollframe import VerticalScrolledFrame
+from lib.scrollframe import VerticalScrolledFrame
 
 
 class UserFrame(VerticalScrolledFrame):        #Main User Frame
