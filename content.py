@@ -1,4 +1,3 @@
-from inspect import currentframe
 from tkinter import Frame
 from admin import AdminFrame
 from user import UserFrame

@@ -20,7 +20,7 @@ class App(Tk):
         self.login.show_frame()
 
     def window_configure(self):
-        self.title("X-LAB") #title of window
+        self.title("X-LAB") # title of window
         self.geometry("900x500")
         self.propagate(False)
 

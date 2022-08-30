@@ -11,11 +11,17 @@ def wraptext(row):
     for value in row:
         arr.append(Paragraph(value,styles['Normal']))
     return arr
+
+def read_file():
+    with open('report_variables.txt') as f:
+        values = f.read().split()
+    return values
 # ==========================
+
 
 styles = getSampleStyleSheet()
 headings =  ['Standard Readings In °C', 'UUC Readings In °C', 'Deviation / Error In °C', 'Expanded Uncertainty In ±°C']
-values = ['300.7', '302.16', '1.46', '0.67']
+values = read_file()
 headings = wraptext(headings)
 values = wraptext(values)
 
@@ -36,7 +42,7 @@ t.setStyle(TableStyle(
     ('FONTSIZE', (0, -1), (-1, -1), 20),
     ('INNERGRID', (0,0), (-1,-1), 1, colors.black),
     ('BOX', (0,0), (-1,-1), 1, colors.black),
-]
+    ]
 ))
 items.append(t)
 document.build(items)
