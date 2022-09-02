@@ -39,7 +39,7 @@ class UserFrame_std(Frame):        #STD Frame
 
         # Standard Deviation Variables
         self.std_labels = ['STD-1','STD-2','STD-3','STD-4','STD-5','STD-6','STD-7','STD-8','STD-9','STD-10','AVG. STD','Ambient','Ambient correction','Error of DMM','Error of sensor']
-        self.std_vars = [DoubleVar()for i in range(len(self.std_labels))]
+        self.std_vars = [StringVar()for i in range(len(self.std_labels))]
         
         #====================
         self.widgets()
@@ -51,10 +51,13 @@ class UserFrame_std(Frame):        #STD Frame
             ttk.Label(self, text=value, justify='left', padding=(10, 5, 10, 5)).grid(row=i, column=1, sticky='new')
         for i in range(len(self.std_labels)):
             if i==10:
+                self.average = ttk.Label(self)
+                self.average.grid(row=i, column=2, padx=10, sticky='ew')
                 continue
             entry=ttk.Entry(self, textvariable=self.std_vars[i])
             entry.grid(row=i, column=2, padx=10, sticky='ew')
             entry.bind('<Return>', self.entry_next)
+            entry.bind('<FocusOut>', self.calculate_avg)
             # entry.bind('<FocusIn>', self.select_widget)
             self.data.append(entry)
 
@@ -63,8 +66,6 @@ class UserFrame_std(Frame):        #STD Frame
         self.save_btn.bind('<Return>', self.on_save)
         
     def on_save(self, e=None):
-        # write code after clicking the button
-        # below code is printing all the values entered in the entries at the time of clicking 'save' btn.
         for i in range(len(self.std_labels)):
             print(float(self.std_vars[i].get()),end='\t')
         sum=0
@@ -78,6 +79,15 @@ class UserFrame_std(Frame):        #STD Frame
         #print("\n The true value of std is ",true_value_std)                       #true value of std
         return(true_value_std)
         
+    def calculate_avg(self, *args):
+        summ = 0.0
+        for  i in range(10):
+            val = self.std_vars[i].get()
+            if val == '':
+                summ += 0
+                continue
+            summ += float(self.std_vars[i].get())
+        self.average['text'] = str(summ/10.0)
 
     def entry_next(self, event):
         next_entry = event.widget.tk_focusNext()
@@ -107,11 +117,9 @@ class UserFrame_uuc(Frame):      #UUC Frame
         self.grid_columnconfigure((0, 1, 2,3,4,5,6), weight=1)
 
         #==== VARIABLES =====
-
         # Standard Deviation Variables
         self.uuc_labels = ['UUC-1','UUC-2','UUC-3','UUC-4','UUC-5','UUC-6','UUC-7','UUC-8','UUC-9','UUC-10','AVG. UUC','Ambient','Ambient correction','Error of DMM']
-        self.uuc_vars = [DoubleVar()for i in range(len(self.uuc_labels))]
-        
+        self.uuc_vars = [StringVar()for i in range(len(self.uuc_labels))]
         #====================
         self.widgets()
         
@@ -122,10 +130,13 @@ class UserFrame_uuc(Frame):      #UUC Frame
             ttk.Label(self, text=value, justify='left', padding=(10, 5, 10, 5)).grid(row=i, column=1, sticky='new')
         for i in range(len(self.uuc_labels)):
             if i==10:
+                self.average = ttk.Label(self)
+                self.average.grid(row=i, column=2, padx=10, sticky='ew')
                 continue
             entry=ttk.Entry(self, textvariable=self.uuc_vars[i])
             entry.grid(row=i, column=2, padx=10, sticky='ew')
             entry.bind('<Return>', self.entry_next)
+            entry.bind('<FocusOut>', self.calculate_avg)
             # entry.bind('<FocusIn>', self.select_widget)
             self.data.append(entry)
 
@@ -133,9 +144,8 @@ class UserFrame_uuc(Frame):      #UUC Frame
         self.save_btn.grid(row=14, columnspan=3, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.on_save)
         self.save_btn.bind('<Return>', self.difference,add='+')
+
     def on_save(self, e=None):
-        # write code after clicking the button
-        # below code is printing all the values entered in the entries at the time of clicking 'save' btn.
         for i in range(len(self.uuc_labels)):
             print(float(self.uuc_vars[i].get()),end='\t')
         sum=0
@@ -163,6 +173,16 @@ class UserFrame_uuc(Frame):      #UUC Frame
         for i in range(0,10,1):
             arr[i]=UserFrame_std.uuc_vars[i].get() - UserFrame_std.std_vars[i].get()
         print(arr)
+    
+    def calculate_avg(self, *args):
+        summ = 0.0
+        for  i in range(10):
+            val = self.uuc_vars[i].get()
+            if val == '':
+                summ += 0
+                continue
+            summ += float(self.uuc_vars[i].get())
+        self.average['text'] = str(summ/10.0)
     
     def show_frame(self):
         self.pack(expand=True, fill='both')
