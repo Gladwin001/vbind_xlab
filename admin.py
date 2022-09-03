@@ -49,9 +49,11 @@ class AdminFrame(Frame):
         return("break")
 
     def on_save(self, e=None):
-        # !! Write code for save functionality below.
-        for i in range(self.no_of_entries):
-            print(self.string_vars[i].get())
+        with open('admin_values.txt', 'w') as f:
+            values = []
+            for i in range(self.no_of_entries):
+                values.append(self.string_vars[i].get())
+            f.write('\n'.join(values))
     
     def show_frame(self):
         self.pack(expand=True, fill='both')
