@@ -1,6 +1,7 @@
+
 from tkinter import Frame, StringVar
 from tkinter import ttk
-
+import datetime
 
 class AdminFrame(Frame):
     def __init__(self, parent, **args):
@@ -24,8 +25,10 @@ class AdminFrame(Frame):
             'TEMP. COEFF',
             'CAL.POINT',
         ]
+        self.error_message = ttk.Label(self, text='kindly fill the field.', foreground='red')
         self.no_of_entries = len(self.label_values)
         self.string_vars = [StringVar() for _ in range(self.no_of_entries)]
+        # print(self.string_vars)
         self.widgets()
 
     def widgets(self):
@@ -49,11 +52,34 @@ class AdminFrame(Frame):
         return("break")
 
     def on_save(self, e=None):
-        with open('admin_values.txt', 'w') as f:
+        with open('admin_values.txt', 'a') as f:
+            current_time=str(datetime.datetime.now())
+            f.write(current_time)
+            f.write("\n")
+            counter=0
             values = []
+            lst=[]
             for i in range(self.no_of_entries):
+                self.error_message.grid_forget()   
                 values.append(self.string_vars[i].get())
-            f.write('\n'.join(values))
+                
+                # if values[i]<1000: 
+                #     counter=counter+1
+                #     self.error_message.grid_forget()
+                # else:
+                #     self.error.message.grid()   
+            try :                
+                lst=[float(n) for n in values]  
+                self.error_message.grid_forget()
+            except:
+                self.error_message.grid()
+                counter=1
+                f.write("Bad Input\n")
+            if counter!=1:
+                f.write('\n'.join(values))
+                f.write("\n \n")               
+                       
+           
     
     def show_frame(self):
         self.pack(expand=True, fill='both')

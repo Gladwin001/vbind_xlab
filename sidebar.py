@@ -20,8 +20,7 @@ class SidebarFrame(Frame):
         self.widgets()
 
     def widgets(self):
-        self.user_icon = ImageTk.PhotoImage(Image.open('assets/icons/user_icon.png').resize(
-            (24, 24), Image.Resampling.LANCZOS))  # importing user_icon.png
+        self.user_icon = ImageTk.PhotoImage(Image.open('assets/icons/user_icon.png').resize((24, 24), Image.LANCZOS))  # importing user_icon.png
         
         self.create_sidebar_handler() # hamburger icon
         self.btn_admin = self.add_btn(text="Admin", img=self.user_icon)
@@ -76,11 +75,9 @@ class SidebarFrame(Frame):
         self.parent.change_content_frame(btn)
     
     def create_sidebar_handler(self):
-        self.hamburger_icon = ImageTk.PhotoImage(Image.open(
-            'assets/icons/hamburger.png').resize((30, 30), Image.Resampling.LANCZOS))  # importing hamburger.png
+        self.hamburger_icon = ImageTk.PhotoImage(Image.open('assets/icons/hamburger.png').resize((30, 30), Image.LANCZOS))  # importing hamburger.png
         
-        self.close_icon = ImageTk.PhotoImage(Image.open(
-            'assets/icons/close.png').resize((30, 30), Image.Resampling.LANCZOS))  # importing hamburger.png
+        self.close_icon = ImageTk.PhotoImage(Image.open('assets/icons/close.png').resize((30, 30), Image.LANCZOS))  # importing hamburger.png
 
         self.btn_ham = Label(self, image=self.hamburger_icon, relief='flat', borderwidth=0, background='#D9D9D9')
         self.btn_ham.bind('<Button-1>', self.toggle_sidebar)
