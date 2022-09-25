@@ -12,11 +12,14 @@ class UserFrame(VerticalScrolledFrame):        #Main User Frame
         self.widgets()
     
     def widgets(self):
-        uf1 = UserFrame_std(self.interior)
-        uf1.show_frame()
-        uf2 = UserFrame_uuc(self.interior)
-        uf2.show_frame()
-    
+        self.uf1 = UserFrame_std(self.interior, self)
+        self.uf1.show_frame()
+        self.uf2 = UserFrame_uuc(self.interior, self)
+        self.uf2.show_frame()
+
+    def get_true_value(self):
+        return self.uf1.true_value_std
+        
     def show_frame(self):
         self.pack(expand=True, fill='both')
 
@@ -29,8 +32,9 @@ class UserFrame(VerticalScrolledFrame):        #Main User Frame
 
 
 class UserFrame_std(Frame):        #STD Frame
-    def __init__(self, parent, **args):
+    def __init__(self, parent_cont, parent):
         Frame.__init__(self, parent, background="white")
+        self.parent_cont = parent_cont
         self.parent = parent
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16), weight=1, minsize=20)
         self.grid_columnconfigure((0, 1, 2,3,4,5,6), weight=1)
@@ -66,18 +70,11 @@ class UserFrame_std(Frame):        #STD Frame
         self.save_btn.bind('<Return>', self.on_save)
         
     def on_save(self, e=None):
-        for i in range(len(self.std_labels)):
-            print(float(self.std_vars[i].get()),end='\t')
-        sum=0
-        for i in range(10):
-            sum=sum+self.std_vars[i].get()
-        avg=sum/10
-        #print("\n The average is ",avg)
-        true_value_std_c= avg + self.std_vars[12].get() - self.std_vars[13].get()
+        true_value_std_c= float(self.average['text']) + float(self.std_vars[12].get()) - float(self.std_vars[13].get())
         #print("\n The true value in celsius is ",true_value_std_c)                #true value of std in celsius
-        true_value_std=true_value_std_c - self.std_vars[14].get()
-        #print("\n The true value of std is ",true_value_std)                       #true value of std
-        return(true_value_std)
+        self.true_value_std=true_value_std_c - float(self.std_vars[14].get())
+        print("\n The true value of std is ",self.true_value_std)                       #true value of std
+        # return(true_value_std)
         
     def calculate_avg(self, *args):
         summ = 0.0
@@ -110,8 +107,9 @@ class UserFrame_std(Frame):        #STD Frame
         self.destroy()
 
 class UserFrame_uuc(Frame):      #UUC Frame
-    def __init__(self, parent, **args):
+    def __init__(self, parent_cont, parent):
         Frame.__init__(self, parent, background="white")
+        self.parent_cont = parent_cont
         self.parent = parent
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), weight=1, minsize=20)
         self.grid_columnconfigure((0, 1, 2,3,4,5,6), weight=1)
@@ -143,21 +141,14 @@ class UserFrame_uuc(Frame):      #UUC Frame
         self.save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
         self.save_btn.grid(row=14, columnspan=3, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.on_save)
-        self.save_btn.bind('<Return>', self.difference,add='+')
+        #self.save_btn.bind('<Return>', self.difference,add='+')
 
     def on_save(self, e=None):
-        for i in range(len(self.uuc_labels)):
-            print(float(self.uuc_vars[i].get()),end='\t')
-        sum=0
-        for i in range(10):
-            sum=sum+self.uuc_vars[i].get()
-        avg=sum/10
-        print("\n The average is ",round(avg, 2))
-        true_value_uuc_c= avg + self.uuc_vars[12].get() - self.uuc_vars[13].get()
+        true_value_uuc_c= float(self.average['text']) + float(self.uuc_vars[12].get()) - float(self.uuc_vars[13].get())
         print("\n The true value of uuc in celsius is ",round(true_value_uuc_c, 2))   #true value of uuc in celsius
         print("\n The conversion to celsius is ",round(true_value_uuc_c, 2)) 
-        true_value_std=UserFrame_std.on_save()
-        final_error = true_value_uuc_c - true_value_std            # [final error=conversion to celsius - true value of std]
+        # true_value_std = UserFrame_std.on_save()
+        final_error = true_value_uuc_c - self.parent.get_true_value()           # [final error=conversion to celsius - true value of std]
         print("\n The final error ",round(final_error, 2))      #final error which is to be displayed in report
 
     def entry_next(self, event):
