@@ -33,7 +33,7 @@ class UserFrame(VerticalScrolledFrame):        #Main User Frame
 
 class UserFrame_std(Frame):        #STD Frame
     def __init__(self, parent_cont, parent):
-        Frame.__init__(self, parent, background="white")
+        Frame.__init__(self, parent_cont, background="white")
         self.parent_cont = parent_cont
         self.parent = parent
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16), weight=1, minsize=20)
@@ -42,21 +42,21 @@ class UserFrame_std(Frame):        #STD Frame
         #==== VARIABLES =====
 
         # Standard Deviation Variables
-        self.std_labels = ['STD-1','STD-2','STD-3','STD-4','STD-5','STD-6','STD-7','STD-8','STD-9','STD-10','AVG. STD','Ambient','Ambient correction','Error of DMM','Error of sensor']
+        self.std_labels = ['STD-1','STD-2','STD-3','STD-4','STD-5','STD-6','STD-7','STD-8','STD-9','STD-10','AVG. STD','Ambient','Ambient correction','Error of DMM','Error of sensor', 'True Value in STD']
         self.std_vars = [StringVar()for i in range(len(self.std_labels))]
         
+        self.data=[]
         #====================
         self.widgets()
         
     def widgets(self):
-        self.data=[]
-        self.entries=[]
         for i, value in enumerate(self.std_labels):
             ttk.Label(self, text=value, justify='left', padding=(10, 5, 10, 5)).grid(row=i, column=1, sticky='new')
         for i in range(len(self.std_labels)):
-            if i==10:
-                self.average = ttk.Label(self)
-                self.average.grid(row=i, column=2, padx=10, sticky='ew')
+            if i in (10, 15):
+                label = ttk.Label(self)
+                label.grid(row=i, column=2, padx=10, sticky='ew')
+                self.data.append(label)
                 continue
             entry=ttk.Entry(self, textvariable=self.std_vars[i])
             entry.grid(row=i, column=2, padx=10, sticky='ew')
@@ -66,15 +66,15 @@ class UserFrame_std(Frame):        #STD Frame
             self.data.append(entry)
 
         self.save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
-        self.save_btn.grid(row=15, columnspan=3, padx=10, pady=10, sticky='e')
+        self.save_btn.grid(columnspan=3, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.on_save)
         
     def on_save(self, e=None):
-        true_value_std_c= float(self.average['text']) + float(self.std_vars[12].get()) - float(self.std_vars[13].get())
+        true_value_std_c= float(self.data[10]['text']) + float(self.std_vars[12].get()) - float(self.std_vars[13].get())
         #print("\n The true value in celsius is ",true_value_std_c)                #true value of std in celsius
         self.true_value_std=true_value_std_c - float(self.std_vars[14].get())
-        print("\n The true value of std is ",self.true_value_std)                       #true value of std
-        # return(true_value_std)
+        print("\n The true value of std is ",self.true_value_std)
+        self.data[15]['text'] = round(self.true_value_std, 2)
         
     def calculate_avg(self, *args):
         summ = 0.0
@@ -84,7 +84,7 @@ class UserFrame_std(Frame):        #STD Frame
                 summ += 0
                 continue
             summ += float(self.std_vars[i].get())
-        self.average['text'] = str(summ/10.0)
+        self.data[10]['text'] = str(summ/10.0)
 
     def entry_next(self, event):
         next_entry = event.widget.tk_focusNext()
@@ -108,7 +108,7 @@ class UserFrame_std(Frame):        #STD Frame
 
 class UserFrame_uuc(Frame):      #UUC Frame
     def __init__(self, parent_cont, parent):
-        Frame.__init__(self, parent, background="white")
+        Frame.__init__(self, parent_cont, background="white")
         self.parent_cont = parent_cont
         self.parent = parent
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), weight=1, minsize=20)
@@ -116,20 +116,20 @@ class UserFrame_uuc(Frame):      #UUC Frame
 
         #==== VARIABLES =====
         # Standard Deviation Variables
-        self.uuc_labels = ['UUC-1','UUC-2','UUC-3','UUC-4','UUC-5','UUC-6','UUC-7','UUC-8','UUC-9','UUC-10','AVG. UUC','Ambient','Ambient correction','Error of DMM']
+        self.uuc_labels = ['UUC-1','UUC-2','UUC-3','UUC-4','UUC-5','UUC-6','UUC-7','UUC-8','UUC-9','UUC-10','AVG. UUC','Ambient','Ambient correction','Error of DMM', 'True Value in UUC', 'Final Error']
         self.uuc_vars = [StringVar()for i in range(len(self.uuc_labels))]
+        self.data=[]
         #====================
         self.widgets()
         
     def widgets(self):
-        self.data=[]
-        self.entries=[]
         for i, value in enumerate(self.uuc_labels):
             ttk.Label(self, text=value, justify='left', padding=(10, 5, 10, 5)).grid(row=i, column=1, sticky='new')
         for i in range(len(self.uuc_labels)):
-            if i==10:
-                self.average = ttk.Label(self)
-                self.average.grid(row=i, column=2, padx=10, sticky='ew')
+            if i in (10, 14, 15):
+                label = ttk.Label(self)
+                label.grid(row=i, column=2, padx=10, sticky='ew')
+                self.data.append(label)
                 continue
             entry=ttk.Entry(self, textvariable=self.uuc_vars[i])
             entry.grid(row=i, column=2, padx=10, sticky='ew')
@@ -139,17 +139,19 @@ class UserFrame_uuc(Frame):      #UUC Frame
             self.data.append(entry)
 
         self.save_btn = ttk.Button(self, text='Save', width=10, command=self.on_save)
-        self.save_btn.grid(row=14, columnspan=3, padx=10, pady=10, sticky='e')
+        self.save_btn.grid( columnspan=3, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.on_save)
         #self.save_btn.bind('<Return>', self.difference,add='+')
 
     def on_save(self, e=None):
-        true_value_uuc_c= float(self.average['text']) + float(self.uuc_vars[12].get()) - float(self.uuc_vars[13].get())
+        true_value_uuc_c= float(self.data[10]['text']) + float(self.uuc_vars[12].get()) - float(self.uuc_vars[13].get())
         print("\n The true value of uuc in celsius is ",round(true_value_uuc_c, 2))   #true value of uuc in celsius
         print("\n The conversion to celsius is ",round(true_value_uuc_c, 2)) 
         # true_value_std = UserFrame_std.on_save()
         final_error = true_value_uuc_c - self.parent.get_true_value()           # [final error=conversion to celsius - true value of std]
         print("\n The final error ",round(final_error, 2))      #final error which is to be displayed in report
+        self.data[14]['text'] = round(true_value_uuc_c, 2)
+        self.data[15]['text'] = round(final_error, 2)
 
     def entry_next(self, event):
         next_entry = event.widget.tk_focusNext()
@@ -173,7 +175,7 @@ class UserFrame_uuc(Frame):      #UUC Frame
                 summ += 0
                 continue
             summ += float(self.uuc_vars[i].get())
-        self.average['text'] = str(summ/10.0)
+        self.data[10]['text'] = str(summ/10.0)
     
     def show_frame(self):
         self.pack(expand=True, fill='both')
