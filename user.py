@@ -142,7 +142,7 @@ class UserFrame_uuc(Frame):      #UUC Frame
         self.save_btn.grid( columnspan=3, padx=10, pady=10, sticky='e')
         self.save_btn.bind('<Return>', self.on_save)
         #self.save_btn.bind('<Return>', self.difference,add='+')
-
+   
     def on_save(self, e=None):
         true_value_uuc_c= float(self.data[10]['text']) + float(self.uuc_vars[12].get()) - float(self.uuc_vars[13].get())
         print("\n The true value of uuc in celsius is ",round(true_value_uuc_c, 2))   #true value of uuc in celsius
@@ -152,7 +152,18 @@ class UserFrame_uuc(Frame):      #UUC Frame
         print("\n The final error ",round(final_error, 2))      #final error which is to be displayed in report
         self.data[14]['text'] = round(true_value_uuc_c, 2)
         self.data[15]['text'] = round(final_error, 2)
+        report_file = open("report_variables.txt", "w") 
+        report_file.seek(0)                        # <- This is the missing piece
+        report_file.truncate()
+        report_file.write(str(round(self.parent.get_true_value(),2))+"\n")
+        report_file.write(str(round(true_value_uuc_c,2))+"\n")
+        report_file.write(str(round(final_error,2))+"\n")
+        report_file.write('0.67')
 
+
+
+
+            
     def entry_next(self, event):
         next_entry = event.widget.tk_focusNext()
         next_entry.focus()

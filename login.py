@@ -1,8 +1,8 @@
 from tkinter import Entry, Label, Frame
 from tkinter.ttk import Button
 
-USERNAME = '' # admin
-PASSWORD = '' # admin@123
+USERNAME = 'admin' # admin
+PASSWORD = 'admin@123' # admin@123
 
 class LoginFrame(Frame):
     def __init__(self, parent):
